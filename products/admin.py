@@ -2,10 +2,21 @@ from django.contrib import admin
 from django.utils import timezone
 
 # Register your models here.
-from .models import Product
+from .models import Product,Review
+
+class ReviewInline(admin.TabularInline):  # StackedInline farklı bir görünüm aynı iş
+    '''Tabular Inline View for '''
+    model = Review
+    extra = 2
+    classes = ('collapse',)
+    # min_num = 3
+    # max_num = 20
+
+
+
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "create_date", "is_in_stock", "update_date","added_days_ago")
+    list_display = ("name", "create_date", "is_in_stock", "update_date","added_days_ago","how_many_reviews")
     list_editable = ( "is_in_stock", )
     list_display_links = ("name", )
     list_filter = ("is_in_stock", "create_date")
@@ -28,6 +39,8 @@ class ProductAdmin(admin.ModelAdmin):
             'description' : "You can use this section for optionals settings"
         })
     )
+    inlines = (ReviewInline,)
+    
     
     actions = ("is_in_stock", )
     def is_in_stock(self, request, queryset):
@@ -39,8 +52,16 @@ class ProductAdmin(admin.ModelAdmin):
     def added_days_ago(self, product):
         fark = timezone.now() - product.create_date
         return fark.days
-    
+
+
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'created_date', 'is_released')
+    list_per_page = 50
+    raw_id_fields = ('product',)
+
+
 admin.site.register(Product,ProductAdmin)
+admin.site.register(Review, ReviewAdmin)
 
 admin.site.site_title = "Clarusway Title"
 admin.site.site_header = "Clarusway Admin Portal"  
