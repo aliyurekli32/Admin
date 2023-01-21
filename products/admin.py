@@ -1,11 +1,11 @@
 from django.contrib import admin
-import datetime
+from django.utils import timezone
 
 # Register your models here.
 from .models import Product
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "create_date", "is_in_stock", "update_date")
+    list_display = ("name", "create_date", "is_in_stock", "update_date","added_days_ago")
     list_editable = ( "is_in_stock", )
     list_display_links = ("name", )
     list_filter = ("is_in_stock", "create_date")
@@ -36,6 +36,9 @@ class ProductAdmin(admin.ModelAdmin):
     
     is_in_stock.short_description = 'İşaretlenen ürünleri stoğa ekle'
     
+    def added_days_ago(self, product):
+        fark = timezone.now() - product.create_date
+        return fark.days
     
 admin.site.register(Product,ProductAdmin)
 
