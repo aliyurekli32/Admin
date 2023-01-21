@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils import timezone
 
 # Register your models here.
-from .models import Product,Review
+from .models import Product,Review,Category
 
 class ReviewInline(admin.TabularInline):  # StackedInline farklı bir görünüm aynı iş
     '''Tabular Inline View for '''
@@ -62,6 +62,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 admin.site.register(Product,ProductAdmin)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(Category)
 
 admin.site.site_title = "Clarusway Title"
 admin.site.site_header = "Clarusway Admin Portal"  
