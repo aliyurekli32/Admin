@@ -35,10 +35,11 @@ class ProductAdmin(admin.ModelAdmin):
         }),
         ('Optionals Settings', {
             "classes" : ("collapse", ), #collapse or wide
-            "fields" : ("description",), #only editable ones can be choosen
+            "fields" : ("description","categories"), #only editable ones can be choosen
             'description' : "You can use this section for optionals settings"
         })
     )
+    filter_horizontal = ("categories", )
     inlines = (ReviewInline,)
     
     
